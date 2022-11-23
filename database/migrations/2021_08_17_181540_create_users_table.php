@@ -19,7 +19,8 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('rols_id')->default(8);;
-            $table->string('name')->index();            
+            $table->string('name')->index();
+            $table->string('username')->index();            
             $table->string('avatar')->nullable()->default('default.jpg');
             $table->string('email')->unique()->index();            
             $table->timestamp('email_verified_at')->nullable();
@@ -32,6 +33,7 @@ class CreateUsersTable extends Migration
             $table->dateTime('confirmed_at')->nullable();
             $table->json('colores')->nullable();
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('rols_id')->references('id')->on('rols');
         });
     }

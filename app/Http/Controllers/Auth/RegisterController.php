@@ -4,16 +4,31 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User\User;
 use Validator;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Notifications\WelcomeUser;
 use App\Notifications\RegisterConfirm;
 use App\Notifications\NotificarEventos;
 
-
 /**
- * Class RegisterController
- * @package %%NAMESPACE%%\Http\Controllers\Auth
+ * @OA\Info(
+ *      version="1.0.0",
+ *      title="API_REST_LARAVEL_9",
+ *      description="Registro y Control de Usuario",
+ *      x={
+ *          "logo": {
+ *              "url": "https://avatars.githubusercontent.com/u/22429379?v=4"
+ *          }
+ *      },
+ *      @OA\Contact(
+ *          email="telecom.com.ve@gmail.com"
+ *      ),
+ *      @OA\License(
+ *         name="Apache 2.0",
+ *         url="https://www.apache.org/licenses/LICENSE-2.0.html"
+ *     )
+ * )
  */
 class RegisterController extends Controller{
     /*
@@ -33,10 +48,11 @@ class RegisterController extends Controller{
      * Show the application registration form.
      *
      * @return \Illuminate\Http\Response
-     */
+     
     public function showRegistrationForm(){
         return view('adminlte::auth.register');
     }
+    */
 
     /**
      * Where to redirect users after login / registration.
@@ -60,8 +76,8 @@ class RegisterController extends Controller{
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data){
-        return Validator::make($data, [
+    protected function validator(Request $request){
+        return $request->validate([
             'name'     => 'required|max:255',
             'username' => 'sometimes|required|max:255|unique:users',
             'email'    => 'required|email|max:255|unique:users',
@@ -71,16 +87,51 @@ class RegisterController extends Controller{
     }
 
     /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return User
-     */
-    protected function create(array $data){
+ * @OA\Post(
+ * path="/api/register",
+ * summary="registrar un nuevo usuario",
+ * description="Registrar con email y password",
+ * tags={"Registrar"},
+ * @OA\RequestBody(
+ *    required=true,
+ *    description="Credenciales del usuario",
+ *    @OA\JsonContent(
+ *       required={"name","username" ,"email","password"},
+ *       @OA\Property(property="name", type="string", format="text", example="Tarsicio Carrizales"),
+ *       @OA\Property(property="username", type="string", format="text", example="tarsicio"),
+ *       @OA\Property(property="email", type="string", format="email", example="telecom.com.ve@gmail.com"),
+ *       @OA\Property(property="password", type="string", format="password", example="123456789"),
+ *       @OA\Property(property="terms", type="boolean", example="true"),
+ *    ),
+ * ),
+ * @OA\Response(
+ *    response=200,
+ *    description="Success"
+ *     ),
+ * @OA\Response(
+ *    response=422,
+ *    description="Hubo un error",
+ *    @OA\JsonContent(
+ *       @OA\Property(property="message", type="string", example="Consulte a su Administrador")
+ *        )
+ *     )
+ * )
+ */
+    protected function create(Request $request){
+        $validacion = $this->validator($request);
+        if(validacion->fails()){
+            $data = [
+                'status' => 'error',
+                'message' => $validacion,                
+                'errors' => $validacion->errors()
+            ];
+            return response()->json($data,422);
+        }
         $fields = [
-            'name'              => $data['name'],
-            'email'             => $data['email'],
-            'password'          => bcrypt($data['password']),
+            'name'              => $validacion['name'],
+            'email'             => $validacion['email'],
+            'username'          => $validacion['username'],
+            'password'          => bcrypt($validacion['password']),
             'confirmation_code' => \Str::random(25),
             'init_day'          => \Carbon\Carbon::now(),
             'end_day'           => \Carbon\Carbon::now()->addMonth(6),
@@ -96,9 +147,10 @@ class RegisterController extends Controller{
                                         'view_button'=>'#5333ed'
                                     ),
         ];
-        if (config('auth.providers.users.field', 'email') === 'username' && isset($data['username'])) {
-            $fields['username'] = $data['username'];
-        }        
+        if (config('auth.providers.users.field', 'email') === 'username' && isset($validacion['username'])) {
+            $fields['username'] = $validacion['username'];
+        }
+        try{      
         $user = User::create($fields);
         $user->notify(new WelcomeUser);
         $user->notify(new RegisterConfirm);
@@ -106,8 +158,25 @@ class RegisterController extends Controller{
                 'title' => trans('message.msg_notification.title'),
                 'body' => trans('message.msg_notification.body')
             ]; 
-        $user->notify(new NotificarEventos($notificacion));   
-        return $user;
+        $user->notify(new NotificarEventos($notificacion));
+        }catch(Exception $e){
+            $error = [
+                'status' => 'error',
+                'message' => 'Hubo un error de conexión, contacte al Administrador'
+            ];
+            return response()->json($error,500);
+        }catch(Throwable $e){
+            $error = [
+                'status' => 'error',
+                'message' => 'Hubo un error de conexión, contacte al Administrador'
+            ];
+            return response()->json($error,500);
+        }
+        $data = [
+            'status' => 'ok',
+            'message' => 'Usuario creado, verifique su correo para culminar el registro'
+        ];
+        return response()->json($data,200);        
     }
 
     /**
@@ -133,12 +202,29 @@ class RegisterController extends Controller{
             session(['create_button_color' => $colores['create_button']]);
             session(['update_button_color' => $colores['update_button']]);
             session(['edit_button_color' => $colores['edit_button']]);
-            session(['view_button_color' => $colores['view_button']]);
+            session(['view_button_color' => $colores['view_button']]);            
         }catch(Exception $e){
-            return redirect('/');    
+            $error = [
+                'status' => 'error',
+                'message' => 'Hubo un error de conexión, contacte al Administrador'
+            ];
+            return response()->json($error,500);
         }catch(Throwable $e){
-            return redirect('/');
-        }               
-        return redirect('/dashboard');
+            $error = [
+                'status' => 'error',
+                'message' => 'Hubo un error de conexión, contacte al Administrador'
+            ];
+            return response()->json($error,500);            
+        }
+        //devuelve una respuesta JSON con el token generado y el tipo de token
+        //se crea token de acceso personal para el usuario
+        $token = $user->createToken('auth_token')->plainTextToken;
+        $data = [
+            'status' => 'ok',
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+            'message' => 'Usuario confirmado correctamente'
+        ];
+        return response()->json($data,200);                       
     }
 }

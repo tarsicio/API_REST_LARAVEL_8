@@ -19,7 +19,8 @@ class UsersSeeder extends Seeder
          \DB::table('users')->insert([
             [
                 'rols_id'           => 1,
-                'name'              => 'Tarsicio Carrizales',                
+                'name'              => 'Tarsicio Carrizales',
+                'username'          => 'tarsicio',
                 'avatar'            => 'default.jpg',
                 'email'             => 'telecom.com.ve@gmail.com',
                 'email_verified_at' => null,
@@ -46,7 +47,8 @@ class UsersSeeder extends Seeder
             ],
             [
                 'rols_id'           => 2,
-                'name'              => 'Usuario Uno',                
+                'name'              => 'Usuario Uno',
+                'username'          => 'usuario01',                
                 'avatar'            => 'default.jpg',
                 'email'             => 'user_1@user.com',
                 'email_verified_at' => null,
@@ -73,7 +75,8 @@ class UsersSeeder extends Seeder
             ],
             [
                 'rols_id'           => 8,
-                'name'              => 'Usuario Dos',                
+                'name'              => 'Usuario Dos',
+                'username'          => 'usuario02',                
                 'avatar'            => 'default.jpg',
                 'email'             => 'user_2@user.com',
                 'email_verified_at' => null,

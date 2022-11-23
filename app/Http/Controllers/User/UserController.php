@@ -19,8 +19,24 @@ use App\Notifications\NotificarEventos;
 use Carbon\Carbon;
 use App\Http\Controllers\User\Colores;
 
+
 class UserController extends Controller
 {
+    public function login(Request $request)
+    {
+        $credentials = [
+            'email' => $request->email,
+            'password' => $request->password
+        ];
+ 
+        if(Auth::attempt($credentials)){
+            $token = Auth::user()->createToken('myapptoken')->plainTextToken;
+ 
+            return response()->json($token);
+        }
+        return response()->json("Usuario y/o contraseña inválido");
+    }
+
     /**
      * Display a listing of the resource.
      * @author Tarsicio Carrizales telecom.com.ve@gmail.com
