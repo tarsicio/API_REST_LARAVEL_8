@@ -19,7 +19,7 @@
         "/api/register": {
             "post": {
                 "tags": [
-                    "Registrar"
+                    "Register_user"
                 ],
                 "summary": "registrar un nuevo usuario",
                 "description": "Registrar con email y password",

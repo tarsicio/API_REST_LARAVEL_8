@@ -26,7 +26,7 @@
                 <h1 class="title">Prueba nuestra <span class="title--active">API_REST Laravel_9.</span></h1> 
                 <p class="copy">Nos encargamos de llevar tu idea al <span class="copy__active">siguiente nivel</span></p>
                 <a href="#" class="cta">telecom.com.ve@gmail.com</a>
-                <p class="copy">Manejo de Usuarios(Autenticación JWT), Roles, Permisos, Notificaciones, Módulos y mucho más. 100% Funcional</p>
+                <p class="copy">Manejo de Usuarios(Autenticación <span class="copy__active">Sanctum</span>), Roles, Permisos, Notificaciones, Módulos y mucho más. 100% Funcional, Documentación API y prueba con <span class="copy__active">Swagger. </span><a href="{{url('/api/v1/documentation')}}" class="link link--active">{{url('/api/v1/documentation')}}</a></p>
             </div>                            
             <img src="img/intro-img.svg" alt="" class="mockup">          
         </section>

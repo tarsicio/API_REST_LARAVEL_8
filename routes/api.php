@@ -22,3 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/register', [RegisterController::class, 'create']);
+
+Route::group(['prefix' => 'v1'], function () {
+    Route::post('/register', [RegisterController::class, 'create']);
+});

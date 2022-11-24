@@ -1,5 +1,12 @@
 <?php
-
+/**
+ * Realizado por:
+ * @author Tarsicio Carrizales <telecom.com.ve@gmail.com>
+ * @copyright 2023 Tarsicio Carrizales
+ * @version 1.0.0
+ * @since 2023-01-01
+ * @license MIT
+ */
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User\User;
@@ -91,7 +98,7 @@ class RegisterController extends Controller{
  * path="/api/register",
  * summary="registrar un nuevo usuario",
  * description="Registrar con email y password",
- * tags={"Registrar"},
+ * tags={"Register_user"},
  * @OA\RequestBody(
  *    required=true,
  *    description="Credenciales del usuario",
@@ -117,8 +124,8 @@ class RegisterController extends Controller{
  *     )
  * )
  */
-    protected function create(Request $request){
-        $validacion = $this->validator($request);
+    protected function create(Request $request){        
+       /* $validacion = RegisterController::validator($request);        
         if(validacion->fails()){
             $data = [
                 'status' => 'error',
@@ -126,12 +133,12 @@ class RegisterController extends Controller{
                 'errors' => $validacion->errors()
             ];
             return response()->json($data,422);
-        }
+        }*/
         $fields = [
-            'name'              => $validacion['name'],
-            'email'             => $validacion['email'],
-            'username'          => $validacion['username'],
-            'password'          => bcrypt($validacion['password']),
+            'name'              => $request['name'],
+            'username'          => $request['username'],
+            'email'             => $request['email'],
+            'password'          => bcrypt($request['password']),
             'confirmation_code' => \Str::random(25),
             'init_day'          => \Carbon\Carbon::now(),
             'end_day'           => \Carbon\Carbon::now()->addMonth(6),
@@ -147,18 +154,18 @@ class RegisterController extends Controller{
                                         'view_button'=>'#5333ed'
                                     ),
         ];
-        if (config('auth.providers.users.field', 'email') === 'username' && isset($validacion['username'])) {
-            $fields['username'] = $validacion['username'];
+        if (config('auth.providers.users.field', 'email') === 'username' && isset($request['username'])) {
+            $fields['username'] = $request['username'];
         }
         try{      
         $user = User::create($fields);
-        $user->notify(new WelcomeUser);
-        $user->notify(new RegisterConfirm);
+        //$user->notify(new WelcomeUser);
+        //$user->notify(new RegisterConfirm);
         $notificacion = [
                 'title' => trans('message.msg_notification.title'),
                 'body' => trans('message.msg_notification.body')
             ]; 
-        $user->notify(new NotificarEventos($notificacion));
+        //$user->notify(new NotificarEventos($notificacion));
         }catch(Exception $e){
             $error = [
                 'status' => 'error',

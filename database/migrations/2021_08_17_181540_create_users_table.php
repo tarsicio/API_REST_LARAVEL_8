@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->unsignedBigInteger('rols_id')->default(8);;
             $table->string('name')->index();
-            $table->string('username')->index();            
+            $table->string('username')->unique()->index();
             $table->string('avatar')->nullable()->default('default.jpg');
             $table->string('email')->unique()->index();            
             $table->timestamp('email_verified_at')->nullable();

@@ -1,8 +1,12 @@
 <?php
 /**
-* Realizado por @author Tarsicio Carrizales Agosto 2021
-* Correo: telecom.com.ve@gmail.com
-*/
+ * Realizado por:
+ * @author Tarsicio Carrizales <telecom.com.ve@gmail.com>
+ * @copyright 2023 Tarsicio Carrizales
+ * @version 1.0.0
+ * @since 2023-01-01
+ * @license MIT
+ */
 namespace App\Http\Controllers\Rol;
 
 use App\Http\Controllers\Controller;
