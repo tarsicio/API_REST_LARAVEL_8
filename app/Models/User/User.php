@@ -1,9 +1,13 @@
 <?php
-/**
-* Realizado por @author Tarsicio Carrizales Agosto 2021
-* Correo: telecom.com.ve@gmail.com
+/** 
+ * Realizado por 
+ * Venezuela, Enero 2023
+ * @author Tarsicio Carrizales <telecom.com.ve@gmail.com>
+ * @copyright 2023 Tarsicio Carrizales
+ * @version 1.0.0
+ * @since 2023-01-01
+ * @license MIT
 */
-
 namespace App\Models\User;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;

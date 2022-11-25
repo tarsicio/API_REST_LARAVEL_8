@@ -1,12 +1,13 @@
 <?php
-/**
- * Realizado por:
+/** 
+ * Realizado por 
+ * Venezuela, Enero 2023
  * @author Tarsicio Carrizales <telecom.com.ve@gmail.com>
  * @copyright 2023 Tarsicio Carrizales
  * @version 1.0.0
  * @since 2023-01-01
  * @license MIT
- */
+*/
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User\User;
@@ -85,7 +86,6 @@ class RegisterController extends Controller{
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(Request $request){
-        return "DENTRO DE VALIDATOR";
         return $request->validate([
             'name'     => 'required|max:255',
             'username' => 'sometimes|required|max:255|unique:users',
@@ -95,7 +95,7 @@ class RegisterController extends Controller{
         ]);
     }
 
-    /**
+/**
  * @OA\Post(
  * path="/api/v1/register",
  * summary="registrar un nuevo usuario",
@@ -114,11 +114,11 @@ class RegisterController extends Controller{
  *    ),
  * ),
  * @OA\Response(
- *    response=200,
+ *    response=201,
  *    description="Success"
  *     ),
  * @OA\Response(
- *    response=422,
+ *    response=400,
  *    description="Hubo un error",
  *    @OA\JsonContent(
  *       @OA\Property(property="message", type="string", example="Consulte a su Administrador")
@@ -153,15 +153,16 @@ class RegisterController extends Controller{
         try{
         // Antes de Guardar preguntamos si existe enla tabla Usuario los datos entrantes.      
         $user = User::create($fields);
-        //$user->notify(new WelcomeUser);
-        //$user->notify(new RegisterConfirm);
+        $user->notify(new WelcomeUser);
+        $user->notify(new RegisterConfirm);
         $notificacion = [
                 'title' => trans('message.msg_notification.title'),
                 'body' => trans('message.msg_notification.body')
             ]; 
-        //$user->notify(new NotificarEventos($notificacion));
+        $user->notify(new NotificarEventos($notificacion));
         }catch(Exception $e){
             $dato = [
+                'code'    => 400,
                 'status'  => 'error',
                 'dato'    => $e,
                 'message' => 'Hubo un error de conexión, contacte al Administrador'
@@ -169,35 +170,56 @@ class RegisterController extends Controller{
             return response()->json($dato,500);
         }catch(Throwable $e){
             $dato = [
+                'code'    => 400,
                 'status'  => 'error',
                 'dato'    => $e,
                 'message' => 'Hubo un error de conexión, contacte al Administrador'
             ];
             return response()->json($dato,500);
         }
+        unset($fields['password']);
+        unset($fields['confirmation_code']);
         $dato = [
+            'code'    => 201,
             'status'  => 'ok',
-            'data'    => $fields,
+            'dato'    => $fields,
             'message' => 'Usuario creado, verifique su correo para culminar el registro'
         ];
         return response()->json($dato,201);        
     }
 
-    /**
-     * Confirm a user with a given confirmation code.
-     *
-     * @param $confirmation_code
-     * @return \Illuminate\Http\RedirectResponse
-     */
+/**
+ * @OA\Post(
+ * path="/api/v1/confirm/OlXThKTk22RP4tPD4Y19RuEUq",
+ * summary="Confirmar el registro",
+ * description="Confirma el registro a través del correo enviado",
+ * tags={"Confirm_Register_user"},
+ * @OA\RequestBody(
+ *    required=true,
+ *    description="Credenciales del usuario",
+ * ),
+ * @OA\Response(
+ *    response=201,
+ *    description="Success"
+ *     ),
+ * @OA\Response(
+ *    response=400,
+ *    description="Hubo un error",
+ *    @OA\JsonContent(
+ *       @OA\Property(property="message", type="string", example="Consulte a su Administrador")
+ *        )
+ *     )
+ * )
+ */    
     public function confirm($confirmation_code){
-        try{
+        try{            
             $user = User::where('confirmation_code', $confirmation_code)->firstOrFail();            
             $user->confirmation_code = null;
             $user->confirmed_at = now();
             $user->activo = 'ALLOW';
-            $colores = $user->colores;
+            $colores = $user->colores;                        
             $user->save();
-            $this->guard()->login($user);
+            /*$this->guard()->login($user);
             session(['menu_color' => $colores['menu']]);
             session(['encabezado_color' => $colores['encabezado']]);
             session(['group_button_color' => $colores['group_button']]);
@@ -206,28 +228,34 @@ class RegisterController extends Controller{
             session(['create_button_color' => $colores['create_button']]);
             session(['update_button_color' => $colores['update_button']]);
             session(['edit_button_color' => $colores['edit_button']]);
-            session(['view_button_color' => $colores['view_button']]);            
+            session(['view_button_color' => $colores['view_button']]); */
         }catch(Exception $e){
             $error = [
-                'status' => 'error',
+                'code'    => 400,
+                'status'  => 'error',
+                'dato'    => $e,
                 'message' => 'Hubo un error de conexión, contacte al Administrador'
             ];
-            return response()->json($error,500);
+            return response()->json($error,400);
         }catch(Throwable $e){
             $error = [
-                'status' => 'error',
+                'code'    => 400,
+                'status'  => 'error',
+                'dato'    => $e,
                 'message' => 'Hubo un error de conexión, contacte al Administrador'
             ];
-            return response()->json($error,500);            
+            return response()->json($error,400);            
         }
         //devuelve una respuesta JSON con el token generado y el tipo de token
         //se crea token de acceso personal para el usuario
         $token = $user->createToken('auth_token')->plainTextToken;
         $data = [
-            'status' => 'ok',
+            'code'         => 201,
+            'status'       => 'ok',
+            'dato'         => $user,
             'access_token' => $token,
-            'token_type' => 'Bearer',
-            'message' => 'Usuario confirmado correctamente'
+            'token_type'   => 'Bearer',
+            'message'      => 'Usuario confirmado correctamente'
         ];
         return response()->json($data,200);                       
     }

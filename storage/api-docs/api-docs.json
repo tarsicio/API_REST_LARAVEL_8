@@ -68,10 +68,62 @@
                     }
                 },
                 "responses": {
-                    "200": {
+                    "201": {
                         "description": "Success"
                     },
-                    "422": {
+                    "400": {
+                        "description": "Hubo un error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Consulte a su Administrador"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/confirm/{confirmation_code}": {
+            "post": {
+                "tags": [
+                    "Confirm_Register_user"
+                ],
+                "summary": "Confirmar el registro",
+                "description": "Confirma el registro a través del correo enviado",
+                "operationId": "f3b851d3fb04d38eac60b9de92c95e89",
+                "requestBody": {
+                    "description": "Credenciales del usuario",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "confirmation_code"
+                                ],
+                                "properties": {
+                                    "confirmation_code": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "OlXThKTk22RP4tPD4Y19RuEUq"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Success"
+                    },
+                    "400": {
                         "description": "Hubo un error",
                         "content": {
                             "application/json": {

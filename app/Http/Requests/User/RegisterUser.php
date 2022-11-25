@@ -1,7 +1,12 @@
 <?php
-/**
-* Realizado por @author Tarsicio Carrizales Agosto 2021
-* Correo: telecom.com.ve@gmail.com
+/** 
+ * Realizado por 
+ * Venezuela, Enero 2023
+ * @author Tarsicio Carrizales <telecom.com.ve@gmail.com>
+ * @copyright 2023 Tarsicio Carrizales
+ * @version 1.0.0
+ * @since 2023-01-01
+ * @license MIT
 */
 namespace App\Http\Requests\User;
 
@@ -30,7 +35,8 @@ class RegisterUser extends FormRequest{
             'name'     => 'min:8|max:40|required|string',
             'username' => 'min:8|max:40|required|string',
             'email'    => 'required|email|max:90|unique:users',
-            'password' => 'required|min:8|max:15'
+            'password' => 'required|min:8|max:15',
+            'terms'    => 'required'
         ];        
     }
 
@@ -48,15 +54,17 @@ class RegisterUser extends FormRequest{
             'password.required' => trans('validacion_froms.user.password_required'),
             'password.min' => trans('validacion_froms.user.password_min'),
             'password.max' => trans('validacion_froms.user.password_max'),
+            'terms.required' => trans('validacion_froms.user.terms_required'),
         ];
     }
 
     protected function failedValidation(Validator $validator){
         $errors = (new ValidationException($validator))->errors();
         $error = [
+                'code'    => 400,
                 'status'  => 'error',
                 'dato'    => $errors,
-                'message' => 'Datos errador, por favor verifique '
+                'message' => 'Datos errador, por favor verifique'
             ];
         throw new HttpResponseException(
             response()->json($error,400)

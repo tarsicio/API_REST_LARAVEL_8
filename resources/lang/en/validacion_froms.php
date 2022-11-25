@@ -19,6 +19,7 @@ return [
         'password_required' => 'The Password field is required',
         'password_min' => 'The Password field must have a minimum of 8 characters',
         'password_max' => 'The Password field must have a maximum of 15 characters',
+        'terms_required' => 'The Terms field is required',
         'activo_required' => 'The Active field is required',
         'rols_id_required' => 'The Role field is required',
         'init_day_required' => 'The Start Date field is required',
