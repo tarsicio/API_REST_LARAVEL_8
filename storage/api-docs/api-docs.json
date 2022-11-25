@@ -16,14 +16,14 @@
         }
     },
     "paths": {
-        "/api/register": {
+        "/api/v1/register": {
             "post": {
                 "tags": [
                     "Register_user"
                 ],
                 "summary": "registrar un nuevo usuario",
                 "description": "Registrar con email y password",
-                "operationId": "02a35f8078678f9f0c89b8fdaa5b696a",
+                "operationId": "27f1a6984bd75e6200230b4c21fc7577",
                 "requestBody": {
                     "description": "Credenciales del usuario",
                     "required": true,

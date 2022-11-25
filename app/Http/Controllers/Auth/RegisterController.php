@@ -12,6 +12,7 @@ namespace App\Http\Controllers\Auth;
 use App\Models\User\User;
 use Validator;
 use Illuminate\Http\Request;
+use App\Http\Requests\User\RegisterUser;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Notifications\WelcomeUser;
@@ -84,6 +85,7 @@ class RegisterController extends Controller{
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(Request $request){
+        return "DENTRO DE VALIDATOR";
         return $request->validate([
             'name'     => 'required|max:255',
             'username' => 'sometimes|required|max:255|unique:users',
@@ -95,7 +97,7 @@ class RegisterController extends Controller{
 
     /**
  * @OA\Post(
- * path="/api/register",
+ * path="/api/v1/register",
  * summary="registrar un nuevo usuario",
  * description="Registrar con email y password",
  * tags={"Register_user"},
@@ -124,16 +126,7 @@ class RegisterController extends Controller{
  *     )
  * )
  */
-    protected function create(Request $request){        
-       /* $validacion = RegisterController::validator($request);        
-        if(validacion->fails()){
-            $data = [
-                'status' => 'error',
-                'message' => $validacion,                
-                'errors' => $validacion->errors()
-            ];
-            return response()->json($data,422);
-        }*/
+    protected function create(RegisterUser $request){
         $fields = [
             'name'              => $request['name'],
             'username'          => $request['username'],
@@ -157,7 +150,8 @@ class RegisterController extends Controller{
         if (config('auth.providers.users.field', 'email') === 'username' && isset($request['username'])) {
             $fields['username'] = $request['username'];
         }
-        try{      
+        try{
+        // Antes de Guardar preguntamos si existe enla tabla Usuario los datos entrantes.      
         $user = User::create($fields);
         //$user->notify(new WelcomeUser);
         //$user->notify(new RegisterConfirm);
@@ -167,23 +161,26 @@ class RegisterController extends Controller{
             ]; 
         //$user->notify(new NotificarEventos($notificacion));
         }catch(Exception $e){
-            $error = [
-                'status' => 'error',
+            $dato = [
+                'status'  => 'error',
+                'dato'    => $e,
                 'message' => 'Hubo un error de conexión, contacte al Administrador'
             ];
-            return response()->json($error,500);
+            return response()->json($dato,500);
         }catch(Throwable $e){
-            $error = [
-                'status' => 'error',
+            $dato = [
+                'status'  => 'error',
+                'dato'    => $e,
                 'message' => 'Hubo un error de conexión, contacte al Administrador'
             ];
-            return response()->json($error,500);
+            return response()->json($dato,500);
         }
-        $data = [
-            'status' => 'ok',
+        $dato = [
+            'status'  => 'ok',
+            'data'    => $fields,
             'message' => 'Usuario creado, verifique su correo para culminar el registro'
         ];
-        return response()->json($data,200);        
+        return response()->json($dato,201);        
     }
 
     /**
