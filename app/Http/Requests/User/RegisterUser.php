@@ -1,7 +1,7 @@
 <?php
 /** 
- * Realizado por 
  * Venezuela, Enero 2023
+ * Realizado por 
  * @author Tarsicio Carrizales <telecom.com.ve@gmail.com>
  * @copyright 2023 Tarsicio Carrizales
  * @version 1.0.0

@@ -1,5 +1,13 @@
 <?php
-
+/** 
+ * Venezuela, Enero 2023
+ * Realizado por 
+ * @author Tarsicio Carrizales <telecom.com.ve@gmail.com>
+ * @copyright 2023 Tarsicio Carrizales
+ * @version 1.0.0
+ * @since 2023-01-01
+ * @license MIT
+*/
 use App\Http\Controllers\NotificarController;
 use App\Models\User\User;
 use App\Http\Controllers\Auth\RegisterController;

@@ -71,7 +71,7 @@
                     "201": {
                         "description": "Success"
                     },
-                    "400": {
+                    "404": {
                         "description": "Hubo un error",
                         "content": {
                             "application/json": {
@@ -90,40 +90,23 @@
                 }
             }
         },
-        "/api/v1/confirm/{confirmation_code}": {
+        "/api/v1/confirm/OlXThKTk22RP4tPD4Y19RuEUq": {
             "post": {
                 "tags": [
                     "Confirm_Register_user"
                 ],
                 "summary": "Confirmar el registro",
                 "description": "Confirma el registro a través del correo enviado",
-                "operationId": "f3b851d3fb04d38eac60b9de92c95e89",
+                "operationId": "83ad34709642e0aa14c0e765635ce341",
                 "requestBody": {
                     "description": "Credenciales del usuario",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "confirmation_code"
-                                ],
-                                "properties": {
-                                    "confirmation_code": {
-                                        "type": "string",
-                                        "format": "text",
-                                        "example": "OlXThKTk22RP4tPD4Y19RuEUq"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
+                    "required": true
                 },
                 "responses": {
                     "201": {
                         "description": "Success"
                     },
-                    "400": {
+                    "404": {
                         "description": "Hubo un error",
                         "content": {
                             "application/json": {

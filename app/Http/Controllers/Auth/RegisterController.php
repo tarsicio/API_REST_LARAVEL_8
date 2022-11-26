@@ -1,7 +1,7 @@
 <?php
 /** 
- * Realizado por 
  * Venezuela, Enero 2023
+ * Realizado por 
  * @author Tarsicio Carrizales <telecom.com.ve@gmail.com>
  * @copyright 2023 Tarsicio Carrizales
  * @version 1.0.0
@@ -11,7 +11,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User\User;
-use Validator;
 use Illuminate\Http\Request;
 use App\Http\Requests\User\RegisterUser;
 use App\Http\Controllers\Controller;
@@ -54,16 +53,6 @@ class RegisterController extends Controller{
     use RegistersUsers;
 
     /**
-     * Show the application registration form.
-     *
-     * @return \Illuminate\Http\Response
-     
-    public function showRegistrationForm(){
-        return view('adminlte::auth.register');
-    }
-    */
-
-    /**
      * Where to redirect users after login / registration.
      *
      * @var string
@@ -77,22 +66,6 @@ class RegisterController extends Controller{
      */
     public function __construct(){
         $this->middleware('guest');
-    }
-
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(Request $request){
-        return $request->validate([
-            'name'     => 'required|max:255',
-            'username' => 'sometimes|required|max:255|unique:users',
-            'email'    => 'required|email|max:255|unique:users',
-            'password' => 'required|min:8|confirmed',
-            'terms'    => 'required',
-        ]);
     }
 
 /**
@@ -118,7 +91,7 @@ class RegisterController extends Controller{
  *    description="Success"
  *     ),
  * @OA\Response(
- *    response=400,
+ *    response=404,
  *    description="Hubo un error",
  *    @OA\JsonContent(
  *       @OA\Property(property="message", type="string", example="Consulte a su Administrador")
@@ -162,20 +135,20 @@ class RegisterController extends Controller{
         $user->notify(new NotificarEventos($notificacion));
         }catch(Exception $e){
             $dato = [
-                'code'    => 400,
+                'code'    => 404,
                 'status'  => 'error',
-                'dato'    => $e,
+                'dato'    => $e->getMessage(),
                 'message' => 'Hubo un error de conexión, contacte al Administrador'
             ];
-            return response()->json($dato,500);
+            return response()->json($dato,404);
         }catch(Throwable $e){
             $dato = [
-                'code'    => 400,
+                'code'    => 404,
                 'status'  => 'error',
-                'dato'    => $e,
+                'dato'    => $e->getMessage(),
                 'message' => 'Hubo un error de conexión, contacte al Administrador'
             ];
-            return response()->json($dato,500);
+            return response()->json($dato,404);
         }
         unset($fields['password']);
         unset($fields['confirmation_code']);
@@ -203,7 +176,7 @@ class RegisterController extends Controller{
  *    description="Success"
  *     ),
  * @OA\Response(
- *    response=400,
+ *    response=404,
  *    description="Hubo un error",
  *    @OA\JsonContent(
  *       @OA\Property(property="message", type="string", example="Consulte a su Administrador")
@@ -212,39 +185,21 @@ class RegisterController extends Controller{
  * )
  */    
     public function confirm($confirmation_code){
-        try{            
-            $user = User::where('confirmation_code', $confirmation_code)->firstOrFail();            
+        try{  
+            $user = User::where('confirmation_code', $confirmation_code)->firstOrFail();
             $user->confirmation_code = null;
             $user->confirmed_at = now();
             $user->activo = 'ALLOW';
             $colores = $user->colores;                        
-            $user->save();
-            /*$this->guard()->login($user);
-            session(['menu_color' => $colores['menu']]);
-            session(['encabezado_color' => $colores['encabezado']]);
-            session(['group_button_color' => $colores['group_button']]);
-            session(['back_button_color' => $colores['back_button']]);
-            session(['process_button_color' => $colores['process_button']]);
-            session(['create_button_color' => $colores['create_button']]);
-            session(['update_button_color' => $colores['update_button']]);
-            session(['edit_button_color' => $colores['edit_button']]);
-            session(['view_button_color' => $colores['view_button']]); */
-        }catch(Exception $e){
+            $user->save();            
+        }catch(\Throwable $e){
             $error = [
-                'code'    => 400,
+                'code'    => 404,
                 'status'  => 'error',
-                'dato'    => $e,
-                'message' => 'Hubo un error de conexión, contacte al Administrador'
+                'dato'    => array(),
+                'message' => "El código suministrado es invalido o el mismo ya venció"
             ];
-            return response()->json($error,400);
-        }catch(Throwable $e){
-            $error = [
-                'code'    => 400,
-                'status'  => 'error',
-                'dato'    => $e,
-                'message' => 'Hubo un error de conexión, contacte al Administrador'
-            ];
-            return response()->json($error,400);            
+            return response()->json($error,404);            
         }
         //devuelve una respuesta JSON con el token generado y el tipo de token
         //se crea token de acceso personal para el usuario
@@ -257,6 +212,6 @@ class RegisterController extends Controller{
             'token_type'   => 'Bearer',
             'message'      => 'Usuario confirmado correctamente'
         ];
-        return response()->json($data,200);                       
+        return response()->json($data,201);                       
     }
 }
