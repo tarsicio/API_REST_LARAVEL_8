@@ -30,6 +30,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => 'v1'], function () {
-    Route::post('/register', [RegisterController::class, 'create']);
-    Route::post('/confirm/{confirmation_code}', [RegisterController::class, 'confirm']);
+    Route::post('/register', [RegisterController::class, 'create'])->name('register.create');    
+    Route::post('/register/{confirmation_code}', [RegisterController::class, 'confirm'])->name('register.confirm');
 });

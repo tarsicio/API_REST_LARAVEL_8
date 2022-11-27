@@ -7,19 +7,15 @@
             "email": "telecom.com.ve@gmail.com"
         },
         "license": {
-            "name": "Apache 2.0",
-            "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+            "name": "MIT"
         },
-        "version": "1.0.0",
-        "x-logo": {
-            "url": "https://avatars.githubusercontent.com/u/22429379?v=4"
-        }
+        "version": "1.0.0"
     },
     "paths": {
         "/api/v1/register": {
             "post": {
                 "tags": [
-                    "Register_user"
+                    "Register"
                 ],
                 "summary": "registrar un nuevo usuario",
                 "description": "Registrar con email y password",
@@ -90,18 +86,22 @@
                 }
             }
         },
-        "/api/v1/confirm/OlXThKTk22RP4tPD4Y19RuEUq": {
+        "/api/v1/register/{confirmation_code}": {
             "post": {
                 "tags": [
-                    "Confirm_Register_user"
+                    "Register"
                 ],
                 "summary": "Confirmar el registro",
                 "description": "Confirma el registro a través del correo enviado",
-                "operationId": "83ad34709642e0aa14c0e765635ce341",
-                "requestBody": {
-                    "description": "Credenciales del usuario",
-                    "required": true
-                },
+                "operationId": "b513f1412035e8d16eb39c6630111c1a",
+                "parameters": [
+                    {
+                        "name": "confirmation_code",
+                        "in": "path",
+                        "description": "confirmation code",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "201": {
                         "description": "Success"

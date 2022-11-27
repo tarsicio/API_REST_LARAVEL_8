@@ -19,23 +19,14 @@ use App\Notifications\WelcomeUser;
 use App\Notifications\RegisterConfirm;
 use App\Notifications\NotificarEventos;
 
+
 /**
  * @OA\Info(
- *      version="1.0.0",
+ *      version="1.0.0", 
  *      title="API_REST_LARAVEL_9",
  *      description="Registro y Control de Usuario",
- *      x={
- *          "logo": {
- *              "url": "https://avatars.githubusercontent.com/u/22429379?v=4"
- *          }
- *      },
- *      @OA\Contact(
- *          email="telecom.com.ve@gmail.com"
- *      ),
- *      @OA\License(
- *         name="Apache 2.0",
- *         url="https://www.apache.org/licenses/LICENSE-2.0.html"
- *     )
+ *      @OA\Contact(email="telecom.com.ve@gmail.com"),
+ *      @OA\License(name="MIT")
  * )
  */
 class RegisterController extends Controller{
@@ -73,7 +64,7 @@ class RegisterController extends Controller{
  * path="/api/v1/register",
  * summary="registrar un nuevo usuario",
  * description="Registrar con email y password",
- * tags={"Register_user"},
+ * tags={"Register"},
  * @OA\RequestBody(
  *    required=true,
  *    description="Credenciales del usuario",
@@ -83,7 +74,7 @@ class RegisterController extends Controller{
  *       @OA\Property(property="username", type="string", format="text", example="tarsicio"),
  *       @OA\Property(property="email", type="string", format="email", example="telecom.com.ve@gmail.com"),
  *       @OA\Property(property="password", type="string", format="password", example="123456789"),
- *       @OA\Property(property="terms", type="boolean", example="true"),
+ *       @OA\Property(property="terms", type="boolean", example="true")
  *    ),
  * ),
  * @OA\Response(
@@ -163,14 +154,16 @@ class RegisterController extends Controller{
 
 /**
  * @OA\Post(
- * path="/api/v1/confirm/OlXThKTk22RP4tPD4Y19RuEUq",
+ * path="/api/v1/register/{confirmation_code}",
  * summary="Confirmar el registro",
  * description="Confirma el registro a través del correo enviado",
- * tags={"Confirm_Register_user"},
- * @OA\RequestBody(
- *    required=true,
- *    description="Credenciales del usuario",
- * ),
+ * tags={"Register"},
+ * @OA\Parameter(
+ *         in="path",
+ *         name="confirmation_code",
+ *         required=true,
+ *         description="confirmation code"
+ *     ),
  * @OA\Response(
  *    response=201,
  *    description="Success"
@@ -185,13 +178,13 @@ class RegisterController extends Controller{
  * )
  */    
     public function confirm($confirmation_code){
-        try{  
+        try{            
             $user = User::where('confirmation_code', $confirmation_code)->firstOrFail();
             $user->confirmation_code = null;
             $user->confirmed_at = now();
             $user->activo = 'ALLOW';
             $colores = $user->colores;                        
-            $user->save();            
+            $user->save();
         }catch(\Throwable $e){
             $error = [
                 'code'    => 404,
