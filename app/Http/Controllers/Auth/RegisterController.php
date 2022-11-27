@@ -153,6 +153,8 @@ class RegisterController extends Controller{
     }
 
 /**
+ * @param  string  $confirmation_code
+ * @return \Illuminate\Http\Response
  * @OA\Post(
  * path="/api/v1/register/{confirmation_code}",
  * summary="Confirmar el registro",
@@ -162,7 +164,9 @@ class RegisterController extends Controller{
  *         in="path",
  *         name="confirmation_code",
  *         required=true,
- *         description="confirmation code"
+ *         description="confirmation code",
+ *         @OA\Schema(type="string"),
+ *         @OA\Examples(example="string", value="1", summary="Indique el confirmation_code")
  *     ),
  * @OA\Response(
  *    response=201,

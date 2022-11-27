@@ -99,7 +99,16 @@
                         "name": "confirmation_code",
                         "in": "path",
                         "description": "confirmation code",
-                        "required": true
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "string": {
+                                "summary": "Indique el confirmation_code",
+                                "value": "1"
+                            }
+                        }
                     }
                 ],
                 "responses": {
