@@ -7,7 +7,7 @@
  * @version 1.0.0
  * @since 2023-01-01
  * @license MIT
-*/
+ */
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
@@ -27,8 +27,36 @@ use App\Http\Controllers\User\Colores;
 
 class UserController extends Controller
 {
-    public function login(Request $request)
-    {
+
+    /**
+     * @OA\Post(
+     * path="/api/v1/login",
+     * summary="Login Usuario",
+     * description="Login Usuario",
+     * tags={"Register"},
+     * @OA\RequestBody(
+     *    required=true,
+     *    description="Credenciales del usuario",
+     *    @OA\JsonContent(
+     *       required={"email","password"},
+     *       @OA\Property(property="email", type="string", format="email", example="telecom.com.ve@gmail.com"),
+     *       @OA\Property(property="password", type="string", format="password", example="123456789")
+     *    ),
+     * ),
+     * @OA\Response(
+     *    response=201,
+     *    description="Success"
+     *     ),
+     * @OA\Response(
+     *    response=404,
+     *    description="Hubo un error",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="Consulte a su Administrador")
+     *        )
+     *     )
+     * )
+     */
+    public function login(Request $request){        
         $credentials = [
             'email' => $request->email,
             'password' => $request->password
@@ -36,10 +64,74 @@ class UserController extends Controller
  
         if(Auth::attempt($credentials)){
             $token = Auth::user()->createToken('myapptoken')->plainTextToken;
- 
-            return response()->json($token);
+            $user = Auth::user($credentials);
+            $data = [
+                'code'         => 201,
+                'status'       => 'ok',                
+                'access_token' => $token,
+                'token_type'   => 'Bearer',
+                'user'         => $user,
+                'message'      => 'Usuario autenticado correctamente'
+            ];    
+            return response()->json($data,201);
         }
-        return response()->json("Usuario y/o contraseña inválido");
+        $data = [
+            'code'         => 404,
+            'status'       => 'error',
+            'message'      => 'Datos Incorrectos'
+        ];
+        return response()->json($data,404);
+    }
+
+    /**
+     * @OA\Post(
+     * path="/api/v1/logout",
+     * summary="Logout Usuario",
+     * description="Logout Usuario",
+     * tags={"Register"},
+     * @OA\RequestBody(
+     *    required=true,
+     *    description="Credenciales del usuario",
+     *    @OA\JsonContent(
+     *       required={"email"},
+     *       @OA\Property(property="email", type="string", format="email", example="telecom.com.ve@gmail.com")
+     *    ),
+     * ),
+     * @OA\Response(
+     *    response=201,
+     *    description="Success"
+     *     ),
+     * @OA\Response(
+     *    response=500,
+     *    description="Hubo un error",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="Consulte a su Administrador")
+     *        )
+     *     )
+     * )
+     */
+    public function logout(Request $request){ 
+    try{
+        //Using Laravel - Sanctum version 8, 9
+        $email = $request->email;
+        $user = User::where('email', $email)->first();
+        // Revoke all tokens...
+        $user->tokens()->delete();
+    }catch(\Throwable $e){
+            $error = [
+                'code'    => 500,
+                'status'  => 'error',
+                'dato'    => array(),
+                'message' => "Contacte al Administrador del Sistema"
+            ];
+            return response()->json($error,500);            
+        }
+        $data = [
+                'code'         => 201,
+                'status'       => 'ok',                
+                'message'      => 'Usuario Logout correctamente'
+            ];
+            return response()->json($data,201);                
     }
 
     /**

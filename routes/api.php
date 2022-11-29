@@ -11,6 +11,7 @@
 use App\Http\Controllers\NotificarController;
 use App\Models\User\User;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,12 +25,9 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::group(['prefix' => 'v1'], function () {
+    Route::post('/login', [UserController::class, 'login'])->name('login.login');
+    Route::post('/logout', [UserController::class, 'logout'])->name('logout.logout');
     Route::post('/register', [RegisterController::class, 'create'])->name('register.create');    
     Route::post('/register/{confirmation_code}', [RegisterController::class, 'confirm'])->name('register.confirm');
 });
