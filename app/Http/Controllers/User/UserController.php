@@ -48,10 +48,21 @@ class UserController extends Controller
      *    description="Success"
      *     ),
      * @OA\Response(
-     *    response=404,
-     *    description="Hubo un error",
+     *    response=401,
+     *    description="Acceso Denegado",
      *    @OA\JsonContent(
-     *       @OA\Property(property="message", type="string", example="Consulte a su Administrador")
+     *       @OA\Property(property="message", 
+     *                    type="string", 
+     *                    example="Confirme Código enviado a su Correo")
+     *        )
+     *     ),
+     * @OA\Response(
+     *    response=404,
+     *    description="Datos Incorrector",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", 
+     *                    type="string", 
+     *                    example="Consulte a su Administrador")
      *        )
      *     )
      * )
@@ -63,17 +74,26 @@ class UserController extends Controller
         ];
  
         if(Auth::attempt($credentials)){
-            $token = Auth::user()->createToken('myapptoken')->plainTextToken;
             $user = Auth::user($credentials);
-            $data = [
-                'code'         => 201,
-                'status'       => 'ok',                
-                'access_token' => $token,
-                'token_type'   => 'Bearer',
-                'user'         => $user,
-                'message'      => 'Usuario autenticado correctamente'
-            ];    
-            return response()->json($data,201);
+            if($user->activo == "ALLOW" && $user->confirmation_code == null){
+                $token = Auth::user()->createToken('myapptoken')->plainTextToken;            
+                $data = [
+                    'code'         => 201,
+                    'status'       => 'ok',                
+                    'access_token' => $token,
+                    'token_type'   => 'Bearer',
+                    'user'         => $user,
+                    'message'      => 'Usuario autenticado correctamente'
+                ];    
+                return response()->json($data,201);
+            }else{
+                $data = [
+                    'code'         => 401,
+                    'status'       => 'error',                                    
+                    'message'      => 'Acceso Denegado, debe confirmar el Código enviado a su Correo'
+                ];    
+                return response()->json($data,401);
+            }                
         }
         $data = [
             'code'         => 404,
@@ -122,7 +142,7 @@ class UserController extends Controller
                 'code'    => 500,
                 'status'  => 'error',
                 'dato'    => array(),
-                'message' => "Contacte al Administrador del Sistema"
+                'message' => "Contacte a su Administrador de Sistema"
             ];
             return response()->json($error,500);            
         }

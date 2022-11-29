@@ -173,8 +173,24 @@
                     "201": {
                         "description": "Success"
                     },
+                    "401": {
+                        "description": "Acceso Denegado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Confirme Código enviado a su Correo"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
                     "404": {
-                        "description": "Hubo un error",
+                        "description": "Datos Incorrector",
                         "content": {
                             "application/json": {
                                 "schema": {
