@@ -8,9 +8,9 @@ HORUS Project | 2023 Version 3 (PHP | LARAVEL | REACT-UI | SWAGGER | API-REST)
 
 At this time (2022-12-26) I am developing the HORUS | 2023, which consists of two (2) parts.
 
-The first part is being developed in PHP in its version 8, and using the Laravel Framework in its version 9, it is an API-REST, which contains everything necessary to function as a Base application (User Management, Roles, Permission , between many other things).
+The first part(https://github.com/tarsicio/API_REST_LARAVEL_9/tree/master) is being developed in PHP in its version 8, and using the Laravel Framework in its version 9, it is an API-REST, which contains everything necessary to function as a Base application (User Management, Roles, Permission , between many other things).
 
-And the second is the UI environment, which is made under React.
+And the second(https://github.com/tarsicio/REACT_LARAVEL9/tree/master) is the UI environment, which is made under React.
 
 All this is under construction, I will upload as fast as time allows, constant updates until the project is finished.
                                         
@@ -38,9 +38,9 @@ Proyecto HORUS | 2023 Versión 3 (PHP | LARAVEL | REACT-UI | SWAGGER | API-REST)
 
 En este tiempo(2022-12-26) me  encuentro desarrollando la aplicación HORUS | 2023, la cual consta de dos(2) partes.
 
-La primera parte esta desarrollándose en PHP en su versión 8, y utilizando el Framework Laravel en su versión 9, la misma es una API-REST, la cual contiene todo lo necesario para funcionar como una aplicación Base(Manejo de Usuarios, Roles, Permiso, entre muchas otras cosas).
+La primera parte(https://github.com/tarsicio/API_REST_LARAVEL_9/tree/master) esta desarrollándose en PHP en su versión 8, y utilizando el Framework Laravel en su versión 9, la misma es una API-REST, la cual contiene todo lo necesario para funcionar como una aplicación Base(Manejo de Usuarios, Roles, Permiso, entre muchas otras cosas).
 
-Y la segunda es el entorno UI, la cual esta realizado bajo React.
+Y la segunda(https://github.com/tarsicio/REACT_LARAVEL9/tree/master) es el entorno UI, la cual esta realizado bajo React.
 
 Todo esto esta en construcción, iré subiendo tan rápido como el tiempo me lo permita, actualizaciones contante hasta terminar el proyecto.
                                         
