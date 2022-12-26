@@ -76,16 +76,29 @@ class UserController extends Controller
         if(Auth::attempt($credentials)){
             $user = Auth::user($credentials);
             if($user->activo == "ALLOW" && $user->confirmation_code == null){
-                $token = Auth::user()->createToken('myapptoken')->plainTextToken;            
-                $data = [
-                    'code'         => 201,
-                    'status'       => 'ok',                
-                    'access_token' => $token,
-                    'token_type'   => 'Bearer',
-                    'user'         => $user,
-                    'message'      => 'Usuario autenticado correctamente'
-                ];    
-                return response()->json($data,201);
+                $fecha_actual = date('Y-m-d');
+                if($user->init_day!=null && $user->end_day!=null){
+                    $fecha_end_day = Carbon::parse($user->end_day)->format('Y-m-d');
+                }                
+                if(($user->init_day==null && $user->end_day==null) ||($fecha_actual <= $fecha_end_day)){
+                    $token = Auth::user()->createToken('myapptoken')->plainTextToken;                    
+                    $data = [
+                        'code'         => 201,
+                        'status'       => 'ok',                
+                        'access_token' => $token,
+                        'token_type'   => 'Bearer',
+                        'user'         => $user,
+                        'message'      => 'Usuario autenticado correctamente'
+                    ];    
+                    return response()->json($data,201);
+                }else{
+                    $data = [
+                        'code'         => 401,
+                        'status'       => 'error',                                    
+                        'message'      => 'Acceso Denegado, fecha vencida'
+                    ];    
+                    return response()->json($data,401);
+                }
             }else{
                 $data = [
                     'code'         => 401,
@@ -96,7 +109,7 @@ class UserController extends Controller
             }                
         }
         $data = [
-            'code'         => 404,
+            'code'         => 401,
             'status'       => 'error',
             'message'      => 'Datos Incorrectos'
         ];
@@ -132,7 +145,7 @@ class UserController extends Controller
      */
     public function logout(Request $request){ 
     try{
-        //Using Laravel - Sanctum version 8, 9
+        //Using Laravel - Sanctum 3.1
         $email = $request->email;
         $user = User::where('email', $email)->first();
         // Revoke all tokens...
