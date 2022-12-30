@@ -125,17 +125,15 @@ class RegisterController extends Controller{
             ]; 
         $user->notify(new NotificarEventos($notificacion));
         }catch(Exception $e){
-            $dato = [
-                'code'    => 404,
-                'status'  => 'error',
+            $dato = [                
+                'status'  => 404,
                 'dato'    => $e->getMessage(),
                 'message' => 'Hubo un error de conexión, contacte al Administrador'
             ];
             return response()->json($dato,404);
         }catch(Throwable $e){
-            $dato = [
-                'code'    => 404,
-                'status'  => 'error',
+            $dato = [                
+                'status'  => 404,
                 'dato'    => $e->getMessage(),
                 'message' => 'Hubo un error de conexión, contacte al Administrador'
             ];
@@ -143,9 +141,8 @@ class RegisterController extends Controller{
         }
         unset($fields['password']);
         unset($fields['confirmation_code']);
-        $dato = [
-            'code'    => 201,
-            'status'  => 'ok',
+        $dato = [            
+            'status'  => 201,
             'dato'    => $fields,
             'message' => 'Usuario creado, verifique su correo para culminar el registro'
         ];
@@ -190,9 +187,8 @@ class RegisterController extends Controller{
             $colores = $user->colores;                        
             $user->save();
         }catch(\Throwable $e){
-            $error = [
-                'code'    => 404,
-                'status'  => 'error',
+            $error = [                
+                'status'  => 404,
                 'dato'    => array(),
                 'message' => "El código suministrado es invalido o el mismo ya venció"
             ];
@@ -201,9 +197,8 @@ class RegisterController extends Controller{
         //devuelve una respuesta JSON con el token generado y el tipo de token
         //se crea token de acceso personal para el usuario
         $token = $user->createToken('auth_token')->plainTextToken;
-        $data = [
-            'code'         => 201,
-            'status'       => 'ok',
+        $data = [            
+            'status'       => 201,
             'dato'         => $user,
             'access_token' => $token,
             'token_type'   => 'Bearer',

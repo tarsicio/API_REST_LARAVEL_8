@@ -82,9 +82,8 @@ class UserController extends Controller
                 }                
                 if(($user->init_day==null && $user->end_day==null) ||($fecha_actual <= $fecha_end_day)){
                     $token = Auth::user()->createToken('myapptoken')->plainTextToken;                    
-                    $data = [
-                        'code'         => 201,
-                        'status'       => 'ok',                
+                    $data = [                        
+                        'status'       => 201,                
                         'access_token' => $token,
                         'token_type'   => 'Bearer',
                         'user'         => $user,
@@ -92,28 +91,25 @@ class UserController extends Controller
                     ];    
                     return response()->json($data,201);
                 }else{
-                    $data = [
-                        'code'         => 401,
-                        'status'       => 'error',                                    
+                    $data = [                        
+                        'status'       => 401,
                         'message'      => 'Acceso Denegado, fecha vencida'
                     ];    
                     return response()->json($data,401);
                 }
             }else{
-                $data = [
-                    'code'         => 401,
-                    'status'       => 'error',                                    
+                $data = [                    
+                    'status'       => 401,                                    
                     'message'      => 'Acceso Denegado, debe confirmar el Código enviado a su Correo'
                 ];    
                 return response()->json($data,401);
             }                
         }
-        $data = [
-            'code'         => 401,
-            'status'       => 'error',
+        $data = [            
+            'status'       => 401,
             'message'      => 'Datos Incorrectos'
         ];
-        return response()->json($data,404);
+        return response()->json($data,401);
     }
 
     /**
@@ -151,17 +147,15 @@ class UserController extends Controller
         // Revoke all tokens...
         $user->tokens()->delete();
     }catch(\Throwable $e){
-            $error = [
-                'code'    => 500,
-                'status'  => 'error',
+            $error = [                
+                'status'  => 500,
                 'dato'    => array(),
                 'message' => "Contacte a su Administrador de Sistema"
             ];
             return response()->json($error,500);            
         }
-        $data = [
-                'code'         => 201,
-                'status'       => 'ok',                
+        $data = [                
+                'status'       => 201,
                 'message'      => 'Usuario Logout correctamente'
             ];
             return response()->json($data,201);                
