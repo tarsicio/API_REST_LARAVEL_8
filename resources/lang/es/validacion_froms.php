@@ -13,6 +13,7 @@ return [
         'username_required' => 'El campo Username es requerido',
         'username_min' => 'El campo Username debe tener mínimo 8 caracteres',
         'username_max' => 'El campo Username debe tener máxino 40 caracteres',
+        'username_unique' => 'El campo user Name debe ser unico, ya existe en la base de datos',
         'email_required' => 'El campo Correo Electrónico es requerido',
         'email_max' => 'El campo Correo Electrónico debe tener máxino 90 caracteres',
         'email_unique' => 'El campo Correo Electrónico debe ser unico, ya existe en la base de datos',

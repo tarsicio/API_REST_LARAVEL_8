@@ -13,6 +13,7 @@ return [
         'username_required' => 'The Full Username field is required',
         'username_min' => 'The Username field must have a minimum of 8 characters',
         'username_max' => 'The Username field must have a maximum of 40 characters',
+        'username_unique' => 'The user Name field must be unique, it already exists in the database',
         'email_required' => 'The Email field must be required',
         'email_max' => 'The Email field must have a maximum of 90 characters',
         'email_unique' => 'The Email field must be unique, it already exists in the database',

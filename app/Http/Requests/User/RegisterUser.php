@@ -33,10 +33,10 @@ class RegisterUser extends FormRequest{
     public function rules(){
         return [
             'name'     => 'min:8|max:40|required|string',
-            'username' => 'min:8|max:40|required|string',
+            'username' => 'min:8|max:40|required|string|unique:users',
             'email'    => 'required|email|max:90|unique:users',
-            'password' => 'required|min:8|max:15',
-            'terms'    => 'required'
+            'password' => 'required|min:8|max:15'
+            //'terms'    => 'required'
         ];        
     }
 
@@ -48,13 +48,14 @@ class RegisterUser extends FormRequest{
             'username.required' => trans('validacion_froms.user.username_required'),
             'username.min' => trans('validacion_froms.user.username_min'),
             'username.max' => trans('validacion_froms.user.username_max'),
+            'username.unique' => trans('validacion_froms.user.username_unique'),
             'email.required' => trans('validacion_froms.user.email_required'),
             'email.max' => trans('validacion_froms.user.email_max'),
             'email.unique' => trans('validacion_froms.user.email_unique'),
             'password.required' => trans('validacion_froms.user.password_required'),
             'password.min' => trans('validacion_froms.user.password_min'),
-            'password.max' => trans('validacion_froms.user.password_max'),
-            'terms.required' => trans('validacion_froms.user.terms_required'),
+            'password.max' => trans('validacion_froms.user.password_max')
+            //'terms.required' => trans('validacion_froms.user.terms_required'),
         ];
     }
 
