@@ -1,16 +1,21 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "API_REST_LARAVEL_9",
-        "description": "Registro y Control de Usuario",
+        "title": "API-REST  HORUS | 2023",
+        "description": "Control Operación de la Aplicación",
         "contact": {
             "email": "telecom.com.ve@gmail.com"
         },
         "license": {
             "name": "MIT"
         },
-        "version": "1.0.0"
+        "version": "3.0.0"
     },
+    "servers": [
+        {
+            "url": "http://localhost:8000/"
+        }
+    ],
     "paths": {
         "/api/v1/register": {
             "post": {
@@ -30,7 +35,8 @@
                                     "name",
                                     "username",
                                     "email",
-                                    "password"
+                                    "password",
+                                    "terms"
                                 ],
                                 "properties": {
                                     "name": {
@@ -86,14 +92,14 @@
                 }
             }
         },
-        "/api/v1/register/{confirmation_code}": {
+        "/api/v1/register/confirm/{confirmation_code}": {
             "post": {
                 "tags": [
                     "Register"
                 ],
                 "summary": "Confirmar el registro",
                 "description": "Confirma el registro a través del correo enviado",
-                "operationId": "b513f1412035e8d16eb39c6630111c1a",
+                "operationId": "9c31d03d19da98326b49b8344dd646fe",
                 "parameters": [
                     {
                         "name": "confirmation_code",
@@ -115,8 +121,8 @@
                     "201": {
                         "description": "Success"
                     },
-                    "404": {
-                        "description": "Hubo un error",
+                    "400": {
+                        "description": "Hubo un error de Validación o Conexión",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -137,7 +143,7 @@
         "/api/v1/login": {
             "post": {
                 "tags": [
-                    "Register"
+                    "Login"
                 ],
                 "summary": "Login Usuario",
                 "description": "Login Usuario",
@@ -211,7 +217,7 @@
         "/api/v1/logout": {
             "post": {
                 "tags": [
-                    "Register"
+                    "Login"
                 ],
                 "summary": "Logout Usuario",
                 "description": "Logout Usuario",

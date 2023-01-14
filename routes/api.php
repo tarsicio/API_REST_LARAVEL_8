@@ -29,5 +29,5 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('/login', [UserController::class, 'login'])->name('login.login');
     Route::post('/logout', [UserController::class, 'logout'])->name('logout.logout');
     Route::post('/register', [RegisterController::class, 'create'])->name('register.create');    
-    Route::post('/register/{confirmation_code}', [RegisterController::class, 'confirm'])->name('register.confirm');
+    Route::post('/register/confirm/{confirmation_code}', [RegisterController::class, 'confirm'])->name('register.confirm');
 });

@@ -4,7 +4,7 @@
  * Realizado por 
  * @author Tarsicio Carrizales <telecom.com.ve@gmail.com>
  * @copyright 2023 Tarsicio Carrizales
- * @version 1.0.0
+ * @version 3.0.0
  * @since 2023-01-01
  * @license MIT
 */
@@ -22,12 +22,13 @@ use App\Notifications\NotificarEventos;
 
 /**
  * @OA\Info(
- *      version="1.0.0", 
- *      title="API_REST_LARAVEL_9",
- *      description="Registro y Control de Usuario",
+ *      version="3.0.0", 
+ *      title="API-REST HORUS | 2023",
+ *      description="Control Operación de la Aplicación",
  *      @OA\Contact(email="telecom.com.ve@gmail.com"),
  *      @OA\License(name="MIT")
  * )
+ * @OA\Server(url="http://localhost:8000/")
  */
 class RegisterController extends Controller{
     /*
@@ -69,7 +70,7 @@ class RegisterController extends Controller{
  *    required=true,
  *    description="Credenciales del usuario",
  *    @OA\JsonContent(
- *       required={"name","username" ,"email","password"},
+ *       required={"name","username" ,"email","password","terms"},
  *       @OA\Property(property="name", type="string", format="text", example="Tarsicio Carrizales"),
  *       @OA\Property(property="username", type="string", format="text", example="tarsicio"),
  *       @OA\Property(property="email", type="string", format="email", example="telecom.com.ve@gmail.com"),
@@ -153,7 +154,7 @@ class RegisterController extends Controller{
  * @param  string  $confirmation_code
  * @return \Illuminate\Http\Response
  * @OA\Post(
- * path="/api/v1/register/{confirmation_code}",
+ * path="/api/v1/register/confirm/{confirmation_code}",
  * summary="Confirmar el registro",
  * description="Confirma el registro a través del correo enviado",
  * tags={"Register"},
@@ -170,8 +171,8 @@ class RegisterController extends Controller{
  *    description="Success"
  *     ),
  * @OA\Response(
- *    response=404,
- *    description="Hubo un error",
+ *    response=400,
+ *    description="Hubo un error de Validación o Conexión",
  *    @OA\JsonContent(
  *       @OA\Property(property="message", type="string", example="Consulte a su Administrador")
  *        )
@@ -188,11 +189,11 @@ class RegisterController extends Controller{
             $user->save();
         }catch(\Throwable $e){
             $error = [                
-                'status'  => 404,
-                'dato'    => array(),
+                'status'  => 400,
+                'dato'    => $e,
                 'message' => "El código suministrado es invalido o el mismo ya venció"
             ];
-            return response()->json($error,404);            
+            return response()->json($error,400);            
         }
         //devuelve una respuesta JSON con el token generado y el tipo de token
         //se crea token de acceso personal para el usuario

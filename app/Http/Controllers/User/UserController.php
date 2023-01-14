@@ -24,7 +24,6 @@ use App\Notifications\NotificarEventos;
 use Carbon\Carbon;
 use App\Http\Controllers\User\Colores;
 
-
 class UserController extends Controller
 {
 
@@ -33,7 +32,7 @@ class UserController extends Controller
      * path="/api/v1/login",
      * summary="Login Usuario",
      * description="Login Usuario",
-     * tags={"Register"},
+     * tags={"Login"},
      * @OA\RequestBody(
      *    required=true,
      *    description="Credenciales del usuario",
@@ -117,7 +116,7 @@ class UserController extends Controller
      * path="/api/v1/logout",
      * summary="Logout Usuario",
      * description="Logout Usuario",
-     * tags={"Register"},
+     * tags={"Login"},
      * @OA\RequestBody(
      *    required=true,
      *    description="Credenciales del usuario",
