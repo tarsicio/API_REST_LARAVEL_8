@@ -29,6 +29,41 @@ class ForgotPasswordController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
+
+    /**
+     * @OA\Post(
+     * path="/api/v1/reset",
+     * summary="Recovery Password",
+     * description="recovery Password",
+     * tags={"Recovery_Password"},
+     * @OA\RequestBody(
+     *    required=true,
+     *    description="Credenciales del usuario",
+     *    @OA\JsonContent(
+     *       required={"email"},
+     *       @OA\Property(property="email", type="string", format="email", example="telecom.com.ve@gmail.com")
+     *    ),
+     * ),
+     * @OA\Response(
+     *    response=200,
+     *    description="Success",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", 
+     *                    type="string", 
+     *                    example="Hemos enviado su enlace de restablecimiento de contraseña por correo electrónico!")
+     *        )
+     *     ),
+     * @OA\Response(
+     *    response=422,
+     *    description="Los datos proporcionados no son válidos.",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", 
+     *                    type="string", 
+     *                    example="No podemos encontrar un usuario con esa dirección de correo electrónico..")
+     *        )
+     *     )
+     * )
+     */
     public function sendResetLinkEmail(Request $request)
     {
         $this->validateEmail($request);

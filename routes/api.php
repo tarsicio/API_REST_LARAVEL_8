@@ -30,4 +30,5 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('/logout', [UserController::class, 'logout'])->name('logout.logout');
     Route::post('/register', [RegisterController::class, 'create'])->name('register.create');    
     Route::post('/register/confirm/{confirmation_code}', [RegisterController::class, 'confirm'])->name('register.confirm');
+    Route::post('/reset', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'sendResetLinkEmail'])->name('reset.sendResetLinkEmail');
 });

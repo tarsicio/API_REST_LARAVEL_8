@@ -44,15 +44,11 @@ class UserController extends Controller
      * ),
      * @OA\Response(
      *    response=201,
-     *    description="Success"
-     *     ),
-     * @OA\Response(
-     *    response=401,
-     *    description="Acceso Denegado",
+     *    description="Success",
      *    @OA\JsonContent(
      *       @OA\Property(property="message", 
      *                    type="string", 
-     *                    example="Confirme Código enviado a su Correo")
+     *                    example="Usuario Logueado Correctamente")
      *        )
      *     ),
      * @OA\Response(
@@ -127,7 +123,12 @@ class UserController extends Controller
      * ),
      * @OA\Response(
      *    response=201,
-     *    description="Success"
+     *    description="Success",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", 
+     *                    type="string", 
+     *                    example="Usuario Logout Correctamente")
+     *        )
      *     ),
      * @OA\Response(
      *    response=500,

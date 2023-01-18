@@ -80,8 +80,13 @@ class RegisterController extends Controller{
  * ),
  * @OA\Response(
  *    response=201,
- *    description="Success"
- *     ),
+ *    description="Success",
+ *    @OA\JsonContent(
+     *       @OA\Property(property="message", 
+     *                    type="string", 
+     *                    example="Usuario creado, verifique su correo para culminar el registro")
+     *        )
+     *     ),
  * @OA\Response(
  *    response=404,
  *    description="Hubo un error",
@@ -116,7 +121,7 @@ class RegisterController extends Controller{
             $fields['username'] = $request['username'];
         }
         try{
-        // Antes de Guardar preguntamos si existe enla tabla Usuario los datos entrantes.      
+        // Antes de Guardar preguntamos si existe en la tabla Usuario los datos entrantes.      
         $user = User::create($fields);
         $user->notify(new WelcomeUser);
         $user->notify(new RegisterConfirm);
@@ -168,8 +173,13 @@ class RegisterController extends Controller{
  *     ),
  * @OA\Response(
  *    response=201,
- *    description="Success"
- *     ),
+ *    description="Success",
+ *    @OA\JsonContent(
+     *       @OA\Property(property="message", 
+     *                    type="string", 
+     *                    example="Usuario confirmadocon éxito...")
+     *        )
+     *     ),
  * @OA\Response(
  *    response=400,
  *    description="Hubo un error de Validación o Conexión",

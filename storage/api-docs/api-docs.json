@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "API-REST  HORUS | 2023",
+        "title": "API-REST HORUS | 2023",
         "description": "Control Operación de la Aplicación",
         "contact": {
             "email": "telecom.com.ve@gmail.com"
@@ -17,6 +17,71 @@
         }
     ],
     "paths": {
+        "/api/v1/reset": {
+            "post": {
+                "tags": [
+                    "Recovery_Password"
+                ],
+                "summary": "Recovery Password",
+                "description": "recovery Password",
+                "operationId": "b65b87cf6583102da1edcd89c185df79",
+                "requestBody": {
+                    "description": "Credenciales del usuario",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "telecom.com.ve@gmail.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Hemos enviado su enlace de restablecimiento de contraseña por correo electrónico!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Los datos proporcionados no son válidos.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No podemos encontrar un usuario con esa dirección de correo electrónico.."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/register": {
             "post": {
                 "tags": [
@@ -71,7 +136,20 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Success"
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Usuario creado, verifique su correo para culminar el registro"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
                         "description": "Hubo un error",
@@ -119,7 +197,20 @@
                 ],
                 "responses": {
                     "201": {
-                        "description": "Success"
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Usuario confirmadocon éxito..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Hubo un error de Validación o Conexión",
@@ -177,17 +268,14 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Success"
-                    },
-                    "401": {
-                        "description": "Acceso Denegado",
+                        "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Confirme Código enviado a su Correo"
+                                            "example": "Usuario Logueado Correctamente"
                                         }
                                     },
                                     "type": "object"
@@ -245,7 +333,20 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Success"
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Usuario Logout Correctamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Hubo un error",

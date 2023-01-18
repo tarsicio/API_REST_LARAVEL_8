@@ -18,8 +18,8 @@ class RolPermisoIsAllow
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
      * @return mixed
-     *  Realizado por @author Tarsicio Carrizales Agosto 2021
-     * Correo: telecom.com.ve@gmail.com
+     *  Realizado por @author Tarsicio Carrizales <telecom.com.ve@gmail.com>
+     * Proyecto HORUS | 2023, versión 3 
      */
     public function handle(Request $request, Closure $next, $modulo = null, $accion = null)
     {
