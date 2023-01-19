@@ -195,26 +195,27 @@ class RegisterController extends Controller{
             $user->confirmation_code = null;
             $user->confirmed_at = now();
             $user->activo = 'ALLOW';
-            $colores = $user->colores;                        
+            $colores = $user->colores;            
+            //devuelve una respuesta JSON con el token generado y el tipo de token
+            //se crea token de acceso personal para el usuario
+            //$token = $user->createToken('myapptoken')->plainTextToken;
+            $token = $user->createToken('auth_token')->plainTextToken;
+            $data = [            
+                'status'       => 201,
+                'dato'         => $user,
+                'access_token' => $token,
+                'token_type'   => 'Bearer',
+                'message'      => 'Usuario confirmado correctamente'
+            ];
             $user->save();
+            return response()->json($data,201);                       
         }catch(\Throwable $e){
-            $error = [                
+            $error = [              
                 'status'  => 400,
                 'dato'    => $e,
                 'message' => "El código suministrado es invalido o el mismo ya venció"
             ];
             return response()->json($error,400);            
-        }
-        //devuelve una respuesta JSON con el token generado y el tipo de token
-        //se crea token de acceso personal para el usuario
-        $token = $user->createToken('auth_token')->plainTextToken;
-        $data = [            
-            'status'       => 201,
-            'dato'         => $user,
-            'access_token' => $token,
-            'token_type'   => 'Bearer',
-            'message'      => 'Usuario confirmado correctamente'
-        ];
-        return response()->json($data,201);                       
+        }        
     }
 }

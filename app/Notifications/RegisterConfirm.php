@@ -37,15 +37,16 @@ class RegisterConfirm extends Notification implements ShouldQueue
      *
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
-     */
+     */        
     public function toMail($notifiable)
-    {        
+    {
+        //url('register/confirm/'.$notifiable->confirmation_code))
         return (new MailMessage)
                     ->subject('Confirme el registro de HORUS')
                     ->line('Estimado(a). '.$notifiable->name)
-                    ->line('Bienvenido a HORUS Venezuela,')
-                    ->action('Confirme para culminar el registro',url('register/confirm/'.$notifiable->confirmation_code))
-                    ->line('Gracias por utilizar la aplicación HORUS')
+                    ->line('Bienvenido a HORUS | 2023 Venezuela,')
+                    ->action('Confirme para culminar el registro','http://localhost:3000/register/confirm/'.$notifiable->confirmation_code)
+                    ->line('Gracias por utilizar la aplicación HORUS | 2023')
                     ->line('Att, Tarsicio Carrizales telecom.com.ve@gmail.com');
     }   
 
