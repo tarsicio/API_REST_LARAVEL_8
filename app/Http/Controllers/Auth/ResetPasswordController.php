@@ -28,7 +28,42 @@ class ResetPasswordController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
-     */    
+     */
+
+    /**
+     * @OA\Post(
+     * path="/api/v1/password/reset/{reset_password}",
+     * summary="reset Password",
+     * description="Reset Password",
+     * tags={"Recovery_Password"},
+     * @OA\RequestBody(
+     *    required=true,
+     *    description="Credenciales del usuario",
+     *    @OA\JsonContent(
+     *       required={"password"},
+     *       @OA\Property(property="password", type="string", format="password", example="123456789")
+     *    ),
+     * ),
+     * @OA\Response(
+     *    response=200,
+     *    description="Success",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", 
+     *                    type="string", 
+     *                    example="Claves modificadas exitosamente")
+     *        )
+     *     ),
+     * @OA\Response(
+     *    response=422,
+     *    description="Los datos proporcionados no son válidos.",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", 
+     *                    type="string", 
+     *                    example="Error al intentar modificar la nueva Clave")
+     *        )
+     *     )
+     * )
+     */     
     public function reset(Request $request)
     {
         $this->validate($request, $this->rules(), $this->validationErrorMessages());
