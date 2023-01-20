@@ -202,7 +202,7 @@ class RegisterController extends Controller{
             $token = $user->createToken('auth_token')->plainTextToken;
             $data = [            
                 'status'       => 201,
-                'dato'         => $user,
+                'user'         => $user,
                 'access_token' => $token,
                 'token_type'   => 'Bearer',
                 'message'      => 'Usuario confirmado correctamente'
