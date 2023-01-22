@@ -32,7 +32,7 @@ class ResetPasswordController extends Controller
 
     /**
      * @OA\Post(
-     * path="/api/v1/password/reset/{reset_password}",
+     * path="/api/v1/password/reset",
      * summary="reset Password",
      * description="Reset Password",
      * tags={"Recovery_Password"},
@@ -40,17 +40,18 @@ class ResetPasswordController extends Controller
      *    required=true,
      *    description="Credenciales del usuario",
      *    @OA\JsonContent(
-     *       required={"password"},
-     *       @OA\Property(property="password", type="string", format="password", example="123456789")
+     *       required={"email","password","password_confirmation","token"},
+     *       @OA\Property(property="email", type="string", format="email", example="telecom.com.ve@gmail.com"),
+     *       @OA\Property(property="password", type="string", format="password", example="123456789"),
+     *       @OA\Property(property="password_confirmation", type="string", format="password", example="123456789"), 
+     *       @OA\Property(property="token", type="string", format="string", example="3e21652c276e6fc2a7008505cfd1dc988622e92c39b2a90d04f8cb713657c5c3")
      *    ),
      * ),
      * @OA\Response(
      *    response=200,
      *    description="Success",
      *    @OA\JsonContent(
-     *       @OA\Property(property="message", 
-     *                    type="string", 
-     *                    example="Claves modificadas exitosamente")
+     *       @OA\Property(property="message",type="string",example="Clave Modificada exitosamente")
      *        )
      *     ),
      * @OA\Response(

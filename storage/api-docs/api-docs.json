@@ -231,14 +231,14 @@
                 }
             }
         },
-        "/api/v1/password/reset/{reset_password}": {
+        "/api/v1/password/reset": {
             "post": {
                 "tags": [
                     "Recovery_Password"
                 ],
                 "summary": "reset Password",
                 "description": "Reset Password",
-                "operationId": "31bb640ffc8f68814878c0a99953c2c7",
+                "operationId": "8372fc9472ae1a7bf122100e9b347017",
                 "requestBody": {
                     "description": "Credenciales del usuario",
                     "required": true,
@@ -246,13 +246,31 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "password"
+                                    "email",
+                                    "password",
+                                    "password_confirmation",
+                                    "token"
                                 ],
                                 "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "telecom.com.ve@gmail.com"
+                                    },
                                     "password": {
                                         "type": "string",
                                         "format": "password",
                                         "example": "123456789"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "123456789"
+                                    },
+                                    "token": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "3e21652c276e6fc2a7008505cfd1dc988622e92c39b2a90d04f8cb713657c5c3"
                                     }
                                 },
                                 "type": "object"
@@ -269,7 +287,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Claves modificadas exitosamente"
+                                            "example": "Clave Modificada exitosamente"
                                         }
                                     },
                                     "type": "object"
