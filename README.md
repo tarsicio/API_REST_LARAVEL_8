@@ -18,6 +18,29 @@ If you wish you can use Version 2 of HORUS | 2022, which is made entirely under 
                                                                                                                                               
 Version 3 of this project has everything that was done in version 2, of the Laravel Framework, I am passing it to API-REST.
 
+Very important to take into account.
+
+in the class
+
+Illuminate\Foundation\Auth\ResetsPasswords;
+
+which is in \vendor -> in the method
+
+protected function resetUrl($notifiable),
+
+You must comment the following lines of code:
+
+return url(route('password.reset', [
+             'token' => $this->token,
+             'email' => $notifiable->getEmailForPasswordReset(),
+         ], false));
+
+and instead put:
+ 
+return 'localhost:3000/password/reset/'.$this->token.'?email='.$notifiable->getEmailForPasswordReset();
+
+You must do all this, so that the sending via email of the link to reset the password works correctly, you feel free to adjust according to your URL for the one that best suits your situation.
+
 Thanks for your support.
 
 Att,
@@ -47,6 +70,30 @@ Todo esto esta en construcción, iré subiendo tan rápido como el tiempo me lo 
 Si lo deseas puedes utilizar la Versión 2 de HORUS | 2022, la cual esta realizada en su totalidad bajo el Framework Laravel 8, la cual está en funcionamiento al 100%, la puedes descargar del siguiente repositorio de GITHUB. https://github.com/tarsicio/Laravel08BaseApp
                                                                                                                                               
 La versión 3 del presente proyecto tiene todo lo que se realizó en la versión 2, del Framework de Laravel, lo estoy pasando a API-REST.
+
+Muy importante, a tomar en cuenta.
+
+en la clase 
+
+Illuminate\Foundation\Auth\ResetsPasswords; 
+
+la cual esta en \vendor -> en el metodo 
+
+protected function resetUrl($notifiable), 
+
+debes de comentar las siguientes líneas de código: 
+
+return url(route('password.reset', [
+            'token' => $this->token,
+            'email' => $notifiable->getEmailForPasswordReset(),
+        ], false));
+
+y en su lugar colocar:
+ 
+return 'localhost:3000/password/reset/'.$this->token.'?email='.$notifiable->getEmailForPasswordReset();
+
+debes realizar todo esto, para que funcione correctamente el envío a través del correo electrónico del link para restablecer la contraseña, usted sientase en la libertad de ajustar de acuerdo a su URL por la que mejor se ajuste a su situación. 
+
 
 Gracias por su Apoyo.
 
