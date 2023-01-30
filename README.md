@@ -37,7 +37,7 @@ return url(route('password.reset', [
 
 and instead put:
  
-return 'localhost:3000/password/reset/'.$this->token.'?email='.$notifiable->getEmailForPasswordReset();
+return 'localhost:5173/password/reset/'.$this->token.'?email='.$notifiable->getEmailForPasswordReset();
 
 You must do all this, so that the sending via email of the link to reset the password works correctly, you feel free to adjust according to your URL for the one that best suits your situation.
 
@@ -90,7 +90,7 @@ return url(route('password.reset', [
 
 y en su lugar colocar:
  
-return 'localhost:3000/password/reset/'.$this->token.'?email='.$notifiable->getEmailForPasswordReset();
+return 'localhost:5173/password/reset/'.$this->token.'?email='.$notifiable->getEmailForPasswordReset();
 
 debes realizar todo esto, para que funcione correctamente el envío a través del correo electrónico del link para restablecer la contraseña, usted sientase en la libertad de ajustar de acuerdo a su URL por la que mejor se ajuste a su situación. 
 
