@@ -76,7 +76,10 @@ class UserController extends Controller
                     $fecha_end_day = Carbon::parse($user->end_day)->format('Y-m-d');
                 }                
                 if(($user->init_day==null && $user->end_day==null) ||($fecha_actual <= $fecha_end_day)){
-                    $token = Auth::user()->createToken('myapptoken')->plainTextToken;
+                    //$token = Auth::user()->createToken('myapptoken')->plainTextToken;
+                    $token = Auth::user()->createToken('myapptoken', [
+                        'expires_at' => now()->addMinutes(2)
+                    ])->plainTextToken;
                     $data = [                        
                         'status'       => 201,                
                         'access_token' => $token,
