@@ -13,7 +13,7 @@
     },
     "servers": [
         {
-            "url": "http://localhost:8000/"
+            "url": "http://www.base-laravel.local:8000/"
         }
     ],
     "paths": {

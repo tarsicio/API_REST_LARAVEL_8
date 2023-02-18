@@ -24,6 +24,8 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
 |
+| ->middleware(['auth:sanctum', 'abilities:check-status,place-orders'])
+| ->middleware(['auth:sanctum', 'ability:check-status,place-orders'])
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

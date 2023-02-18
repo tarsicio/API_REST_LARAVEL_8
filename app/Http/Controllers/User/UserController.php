@@ -77,7 +77,7 @@ class UserController extends Controller
                 }                
                 if(($user->init_day==null && $user->end_day==null) ||($fecha_actual <= $fecha_end_day)){
                     //$token = Auth::user()->createToken('myapptoken')->plainTextToken;
-                    $token = Auth::user()->createToken('myapptoken', [
+                    $token = Auth::user()->createToken('auth_token', [
                         'expires_at' => now()->addMinutes(2)
                     ])->plainTextToken;
                     $data = [                        
@@ -149,6 +149,11 @@ class UserController extends Controller
         $user = User::where('email', $email)->first();
         // Revoke all tokens...
         $user->tokens()->delete();
+        // Revoke the token that was used to authenticate the current request...
+        //$request->user()->currentAccessToken()->delete();
+ 
+        // Revoke a specific token...
+        //$user->tokens()->where('id', $tokenId)->delete();
     }catch(\Throwable $e){
             $error = [                
                 'status'  => 500,

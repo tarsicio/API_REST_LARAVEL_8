@@ -28,7 +28,7 @@ use App\Notifications\NotificarEventos;
  *      @OA\Contact(email="telecom.com.ve@gmail.com"),
  *      @OA\License(name="MIT")
  * )
- * @OA\Server(url="http://localhost:8000/")
+ * @OA\Server(url="http://www.base-laravel.local:8000/")
  */
 class RegisterController extends Controller{
     /*

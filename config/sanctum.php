@@ -46,6 +46,8 @@ return [
     |
     */
     // Cantidad de minutos para expirar por default es null, pero aquí le coloqué 60 Minutos
+    // 'expiration' => 525600,
+    // $schedule->command('sanctum:prune-expired --hours=24')->daily(); programar Tarea
     'expiration' => 60,
 
     /*
@@ -64,4 +66,5 @@ return [
         'encrypt_cookies' => App\Http\Middleware\EncryptCookies::class,
     ],
 
+    'prefix' => 'api/v1/sanctum'
 ];

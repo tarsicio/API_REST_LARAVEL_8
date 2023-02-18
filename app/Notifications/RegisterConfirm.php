@@ -40,12 +40,12 @@ class RegisterConfirm extends Notification implements ShouldQueue
      */        
     public function toMail($notifiable)
     {
-        //url('register/confirm/'.$notifiable->confirmation_code))
+        //url('register/confirm/'.$notifiable->confirmation_code))        
         return (new MailMessage)
                     ->subject('Confirme el registro de HORUS')
                     ->line('Estimado(a). '.$notifiable->name)
                     ->line('Bienvenido a HORUS | 2023 Venezuela,')
-                    ->action('Confirme para culminar el registro','http://localhost:5173/register/confirm/'.$notifiable->confirmation_code)
+                    ->action('Confirme para culminar el registro','http://www.base-laravel.local:5173/register/confirm/'.$notifiable->confirmation_code)
                     ->line('Gracias por utilizar la aplicación HORUS | 2023')
                     ->line('Att, Tarsicio Carrizales telecom.com.ve@gmail.com');
     }   
