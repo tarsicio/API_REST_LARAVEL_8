@@ -37,7 +37,7 @@ in the class
 
 Illuminate\Foundation\Auth\ResetsPasswords;
 
-which is in \vendor -> in the method
+which is in \vendor\laravel\framework\src\illuminate\Auth\Notifications\resetPassword.php/line-104 -> in the method
 
 protected function resetUrl($notifiable),
 
@@ -102,7 +102,7 @@ en la clase
 
 Illuminate\Foundation\Auth\ResetsPasswords; 
 
-la cual esta en \vendor -> en el metodo 
+la cual esta en \vendor\laravel\framework\src\illuminate\Auth\Notifications\resetPassword.php/line-104 -> en el metodo 
 
 protected function resetUrl($notifiable), 
 
