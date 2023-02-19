@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Facade;
 
 return [
 
+    'csrf' => ['xsrfCookieName' => 'XSRF-TOKEN', 'xsrfHeaderName' => 'X-XSRF-TOKEN'],
     /*
     |--------------------------------------------------------------------------
     | Application Name
