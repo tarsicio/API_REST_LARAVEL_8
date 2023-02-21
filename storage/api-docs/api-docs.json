@@ -393,37 +393,33 @@
                 "summary": "Logout Usuario",
                 "description": "Logout Usuario",
                 "operationId": "ade387422f1727eebadda9da3ea7f0dd",
-                "requestBody": {
-                    "description": "Credenciales del usuario",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "email"
-                                ],
-                                "properties": {
-                                    "email": {
-                                        "type": "string",
-                                        "format": "email",
-                                        "example": "telecom.com.ve@gmail.com"
-                                    }
-                                },
-                                "type": "object"
+                "parameters": [
+                    {
+                        "name": "auth",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "string": {
+                                "summary": "Indique el token de autorización",
+                                "value": "Bearer 3|pLEBR1ffczakUHsYXt35xv4i3mU8fiaCn5v1BlJB"
                             }
                         }
                     }
-                },
+                ],
                 "responses": {
                     "201": {
-                        "description": "Success",
+                        "description": "Usuario logout correctamente",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Usuario Logout Correctamente"
+                                            "example": "Usuario logout correctamente"
                                         }
                                     },
                                     "type": "object"
@@ -432,7 +428,7 @@
                         }
                     },
                     "500": {
-                        "description": "Hubo un error",
+                        "description": "Hubo un error al intentar realizar el logout",
                         "content": {
                             "application/json": {
                                 "schema": {

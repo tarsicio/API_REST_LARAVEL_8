@@ -23,6 +23,7 @@ use App\Notifications\RegisterConfirm;
 use App\Notifications\NotificarEventos;
 use Carbon\Carbon;
 use App\Http\Controllers\User\Colores;
+use Illuminate\Session;
 
 class UserController extends Controller
 {
@@ -66,8 +67,7 @@ class UserController extends Controller
         $credentials = [
             'email' => $request->email,
             'password' => $request->password
-        ];
- 
+        ];        
         if(Auth::attempt($credentials)){
             $user = Auth::user($credentials);
             if($user->activo == "ALLOW" && $user->confirmation_code == null){
@@ -76,15 +76,14 @@ class UserController extends Controller
                     $fecha_end_day = Carbon::parse($user->end_day)->format('Y-m-d');
                 }                
                 if(($user->init_day==null && $user->end_day==null) ||($fecha_actual <= $fecha_end_day)){
-                    //$token = Auth::user()->createToken('myapptoken')->plainTextToken;
                     $token = Auth::user()->createToken('auth_token', [
-                        'expires_at' => now()->addMinutes(2)
-                    ])->plainTextToken;
+                        'expires_at' => now()->addMinutes(30)
+                    ])->plainTextToken;                    
                     $data = [                        
                         'status'       => 201,                
-                        'access_token' => $token,
+                        'access_token' => $token,                        
                         'token_type'   => 'Bearer',
-                        'user'         => $user,
+                        'user'         => $user,                        
                         'message'      => 'Usuario autenticado correctamente'
                     ];    
                     return response()->json($data,201);
@@ -116,26 +115,26 @@ class UserController extends Controller
      * summary="Logout Usuario",
      * description="Logout Usuario",
      * tags={"Login"},
-     * @OA\RequestBody(
-     *    required=true,
-     *    description="Credenciales del usuario",
-     *    @OA\JsonContent(
-     *       required={"email"},
-     *       @OA\Property(property="email", type="string", format="email", example="telecom.com.ve@gmail.com")
-     *    ),
+     * @OA\Parameter(
+     *  name="auth",
+     *  in="header",
+     *  required=true,
+     *  description="Bearer token",
+     *  @OA\Schema(type="string"),
+     *  @OA\Examples(example="string", value="Bearer 3|pLEBR1ffczakUHsYXt35xv4i3mU8fiaCn5v1BlJB", summary="Indique el token de autorización")
      * ),
      * @OA\Response(
      *    response=201,
-     *    description="Success",
+     *    description="Usuario logout correctamente",
      *    @OA\JsonContent(
      *       @OA\Property(property="message", 
      *                    type="string", 
-     *                    example="Usuario Logout Correctamente")
+     *                    example="Usuario logout correctamente")
      *        )
      *     ),
      * @OA\Response(
      *    response=500,
-     *    description="Hubo un error",
+     *    description="Hubo un error al intentar realizar el logout",
      *    @OA\JsonContent(
      *       @OA\Property(property="message", type="string", example="Consulte a su Administrador")
      *        )
@@ -145,10 +144,9 @@ class UserController extends Controller
     public function logout(Request $request){ 
     try{
         //Using Laravel - Sanctum 3.1
-        $email = $request->email;
-        $user = User::where('email', $email)->first();
-        // Revoke all tokens...
-        $user->tokens()->delete();
+        
+        // Revoke all tokens... Usted luego escoja el que más le funcione para su proyecto        
+        auth()->user()->tokens()->delete();
         // Revoke the token that was used to authenticate the current request...
         //$request->user()->currentAccessToken()->delete();
  
