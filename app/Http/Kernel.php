@@ -67,5 +67,6 @@ class Kernel extends HttpKernel
         'permiso' =>  \App\Http\Middleware\RolPermisoIsAllow::class,
         'abilities' => \Laravel\Sanctum\Http\Middleware\CheckAbilities::class,
         'ability' => \Laravel\Sanctum\Http\Middleware\CheckForAnyAbility::class,
+        'csrf.check' => \App\Http\Middleware\VerifyCsrfToken_CSRF::class,
     ];
 }
