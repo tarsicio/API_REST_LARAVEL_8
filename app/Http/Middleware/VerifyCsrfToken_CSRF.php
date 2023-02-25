@@ -21,7 +21,7 @@ class VerifyCsrfToken_CSRF
     {
         // Obtenga el token de la solicitud
         $token = $request->input('_token') ?: $request->header('X-CSRF-TOKEN');
-
+        //getTokenFromRequest
         // Verifique que el token coincida con el almacenado en la sesión
         if ($token && $token === $request->session()->token()) {
             // Si coincide, continúe con la solicitud

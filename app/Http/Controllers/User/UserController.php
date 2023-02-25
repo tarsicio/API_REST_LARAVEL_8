@@ -24,6 +24,7 @@ use App\Notifications\NotificarEventos;
 use Carbon\Carbon;
 use App\Http\Controllers\User\Colores;
 use Illuminate\Session;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class UserController extends Controller
 {
@@ -67,7 +68,16 @@ class UserController extends Controller
         $credentials = [
             'email' => $request->email,
             'password' => $request->password
-        ];        
+        ];
+
+        /*
+        $token =  new PersonalAccessToken();
+        if(!$token->findToken($request->_token)){
+            $tarsicio = $request->_token;
+        }else{ 
+            $tarsicio = 'VACIO'; 
+        } */
+
         if(Auth::attempt($credentials)){
             $user = Auth::user($credentials);
             if($user->activo == "ALLOW" && $user->confirmation_code == null){
@@ -84,7 +94,8 @@ class UserController extends Controller
                         'access_token' => $token,                        
                         'token_type'   => 'Bearer',
                         'user'         => $user,                        
-                        'message'      => 'Usuario autenticado correctamente'
+                        'message'      => 'Usuario autenticado correctamente',
+                        'tarsicio'     => $tarsicio
                     ];    
                     return response()->json($data,201);
                 }else{
