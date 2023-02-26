@@ -25,6 +25,7 @@ use Carbon\Carbon;
 use App\Http\Controllers\User\Colores;
 use Illuminate\Session;
 use Laravel\Sanctum\PersonalAccessToken;
+use Illuminate\Auth\GenericUser;
 
 class UserController extends Controller
 {
@@ -78,8 +79,14 @@ class UserController extends Controller
             $tarsicio = 'VACIO'; 
         } */
 
+
         if(Auth::attempt($credentials)){
             $user = Auth::user($credentials);
+            //Realizando prueba con Token Eliminar Luego, No utilizar
+            $array = ['id'=>$user->id,'remember_token'=>$user->remember_token];
+            $token10 = new GenericUser($array);
+            $_token = $token10->getRememberToken();
+            //Realizando prueba con Token Eliminar Luego, No utilizar
             if($user->activo == "ALLOW" && $user->confirmation_code == null){
                 $fecha_actual = date('Y-m-d');
                 if($user->init_day!=null && $user->end_day!=null){
@@ -95,7 +102,7 @@ class UserController extends Controller
                         'token_type'   => 'Bearer',
                         'user'         => $user,                        
                         'message'      => 'Usuario autenticado correctamente',
-                        'tarsicio'     => $tarsicio
+                        '_TOKEN'       => $_token
                     ];    
                     return response()->json($data,201);
                 }else{
