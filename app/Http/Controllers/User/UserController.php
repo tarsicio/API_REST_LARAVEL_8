@@ -23,9 +23,6 @@ use App\Notifications\RegisterConfirm;
 use App\Notifications\NotificarEventos;
 use Carbon\Carbon;
 use App\Http\Controllers\User\Colores;
-use Illuminate\Session;
-use Laravel\Sanctum\PersonalAccessToken;
-use Illuminate\Auth\GenericUser;
 
 class UserController extends Controller
 {
@@ -70,23 +67,8 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => $request->password
         ];
-
-        /*
-        $token =  new PersonalAccessToken();
-        if(!$token->findToken($request->_token)){
-            $tarsicio = $request->_token;
-        }else{ 
-            $tarsicio = 'VACIO'; 
-        } */
-
-
         if(Auth::attempt($credentials)){
-            $user = Auth::user($credentials);
-            //Realizando prueba con Token Eliminar Luego, No utilizar
-            $array = ['id'=>$user->id,'remember_token'=>$user->remember_token];
-            $token10 = new GenericUser($array);
-            $_token = $token10->getRememberToken();
-            //Realizando prueba con Token Eliminar Luego, No utilizar
+            $user = Auth::user($credentials);            
             if($user->activo == "ALLOW" && $user->confirmation_code == null){
                 $fecha_actual = date('Y-m-d');
                 if($user->init_day!=null && $user->end_day!=null){
@@ -95,14 +77,16 @@ class UserController extends Controller
                 if(($user->init_day==null && $user->end_day==null) ||($fecha_actual <= $fecha_end_day)){
                     $token = Auth::user()->createToken('auth_token', [
                         'expires_at' => now()->addMinutes(30)
-                    ])->plainTextToken;                    
+                    ])->plainTextToken;
+                    $value = $request->_token_csrf; // $request->session()->has('users');
+                    //$value = $request->session()->get('XSRF-TOKEN');                    
                     $data = [                        
                         'status'       => 201,                
                         'access_token' => $token,                        
                         'token_type'   => 'Bearer',
                         'user'         => $user,                        
                         'message'      => 'Usuario autenticado correctamente',
-                        '_TOKEN'       => $_token
+                        'value'        => $value
                     ];    
                     return response()->json($data,201);
                 }else{
@@ -174,7 +158,7 @@ class UserController extends Controller
             $error = [                
                 'status'  => 500,
                 'dato'    => array(),
-                'message' => "Contacte a su Administrador de Sistema"
+                'message' => "Contacte a su Administrador de Sistema"                
             ];
             return response()->json($error,500);            
         }
